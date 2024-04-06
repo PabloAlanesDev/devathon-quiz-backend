@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  app:
+    hostname: app
+    build: ./
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./:/app/
+    depends_on:
+      - mongodb
+    networks:
+      - local-network
+    command: "python server.py"
+
+
+  mongodb:
+    hostname: mongodb
+    image: mongo
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - local-network
+
+networks:
+  local-network:
+    driver: bridge
+
+volumes:
+  mongodata:
