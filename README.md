@@ -24,6 +24,7 @@ Are you a coding enthusiast looking to put your skills to test? Don't look more!
 - Install python dependencies
     ```
     pip install -r requirements-dev.txt
+    pip install flask-pymongo python-dotenv
     ```
 
 - Run server
