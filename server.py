@@ -1,19 +1,20 @@
-from flask import Flask, jsonify
+import os
+
+from dotenv import load_dotenv
+from flask import Flask
 from flask_socketio import SocketIO
 
+from config.mongodb import mongo
+from routes.quiz import quiz
+
+load_dotenv()
+
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
+app.config['MONGO_URI'] = os.getenv('MONGO_URI')
+mongo.init_app(app)
+
+app.register_blueprint(quiz, url_prefix='/quiz')
 socketio = SocketIO(app, cors_allowed_origins='*')
-
-
-@app.route('/', methods=['GET'])
-def example():
-    data = {
-        'name': 'Juan',
-        'age': 30,
-        'city': 'Madrid'
-    }
-    return jsonify(data)
 
 
 @socketio.on('message')
