@@ -26,6 +26,12 @@ Are you a coding enthusiast looking to put your skills to test? Don't look more!
     pip install -r requirements-dev.txt
     ```
 
+- Setup githooks
+    ```
+    pip install pre-commit
+    pre-commit install
+    ```
+
 - Run server
 
     ```sh
