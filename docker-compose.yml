@@ -13,10 +13,12 @@ services:
     networks:
       - local-network
     command: "python server.py"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/db
 
 
   mongodb:
-    hostname: mongodb
+    hostname: mongo
     image: mongo
     volumes:
       - mongodata:/data/db
