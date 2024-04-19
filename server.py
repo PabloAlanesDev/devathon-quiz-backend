@@ -6,6 +6,7 @@ from flask_socketio import SocketIO
 
 from config.mongodb import mongo
 from routes.quiz import quiz
+from routes.rooms import rooms
 
 load_dotenv()
 
@@ -14,6 +15,8 @@ app.config['MONGO_URI'] = os.getenv('MONGO_URI')
 mongo.init_app(app)
 
 app.register_blueprint(quiz, url_prefix='/quiz')
+app.register_blueprint(rooms, url_prefix='/api/rooms')
+
 socketio = SocketIO(app, cors_allowed_origins='*')
 
 
