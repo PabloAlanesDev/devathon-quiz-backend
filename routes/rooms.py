@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from flask import request
 from utils.parsers import parse_json
 from utils.generators import generate_random_digits
@@ -55,7 +55,26 @@ def create_room():
 
     mongo.db.rooms.insert_one(parse_json(data))
 
-    return data
+    return jsonify(data)
+
+
+@rooms.route('/', methods=['GET'])
+def list_rooms():
+    filter_with_quiz = request.args.get('with_quiz') in ['True', 'true'] or False
+    filter_status = request.args.get('status')
+
+    filter_query = dict()
+    if filter_with_quiz:
+        filter_query = dict(filter_query, **{'quiz_id': {'$ne': None}})
+    if filter_status:
+        filter_query = dict(filter_query, **{'status': filter_status})
+
+    rooms_list = list(mongo.db.rooms.find(filter_query, {'_id': 0}))
+
+    if not rooms_list:
+        return jsonify(message="Rooms was not found"), 404
+
+    return jsonify(rooms_list)
 
 
 # TODO: Fix circular dependencies with pymongo and flask app
