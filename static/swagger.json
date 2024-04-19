@@ -1,0 +1,539 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "[API REST] Code Quiz Challenge: Test Your Programming Knowledge",
+    "description": "Are you a coding enthusiast looking to put your skills to test? Don't look more! Our Code Quiz Challenge is designed to challenge your programming knowledge versus other players across various languages and concepts. Whether you,re a begginer or a seasoned developer looking for a fun way to brush up on your skills, this quiz is perfect for you.",
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "Github Repository",
+    "url": "https://github.com/PabloAlanesDev/devathon-quiz-backend/"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000/api/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "room"
+    },
+    {
+      "name": "quiz"
+    },
+    {
+      "name": "user"
+    }
+  ],
+  "paths": {
+    "/quizzes": {
+      "post": {
+        "tags": [
+          "quiz"
+        ],
+        "summary": "Create a new quiz - TODO",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuizCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quiz"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "quiz"
+        ],
+        "summary": "Return list of quizzes - TODO",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Status values that need to be considered for filter",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "created",
+                "started",
+                "full",
+                "empty"
+              ]
+            }
+          },
+          {
+            "name": "with_quiz",
+            "in": "query",
+            "description": "Filter rooms with quiz assignment only",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Room"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Quizzes was not found"
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create a new user - TODO",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Return list of users - TODO",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Users was not found"
+          }
+        }
+      }
+    },
+    "/rooms": {
+      "post": {
+        "tags": [
+          "room"
+        ],
+        "summary": "Create a new room",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoomCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Room"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "room"
+        ],
+        "summary": "Return list of rooms",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Status values that need to be considered for filter",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "created",
+                "started",
+                "full",
+                "empty"
+              ]
+            }
+          },
+          {
+            "name": "with_quiz",
+            "in": "query",
+            "description": "Filter rooms with quiz assignment only",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Room"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Rooms was not found"
+          }
+        }
+      }
+    },
+    "/rooms/{room_id}": {
+      "patch": {
+        "tags": [
+          "room"
+        ],
+        "summary": "Update room - TODO",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "path",
+            "description": "room id to update partially",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Room"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Room"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "room"
+        ],
+        "summary": "Delete room - TODO",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "path",
+            "description": "room id to delete",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "8144be4a2fe0"
+          },
+          "name": {
+            "type": "string",
+            "example": "pedro"
+          },
+          "score": {
+            "type": "number",
+            "default": 0,
+            "format": "float",
+            "example": 10.5
+          },
+          "status": {
+            "type": "string",
+            "default": "unknown",
+            "enum": [
+              "unknown",
+              "connect",
+              "disconnect"
+            ]
+          }
+        }
+      },
+      "Room": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "455420"
+          },
+          "owner": {
+            "type": "string",
+            "example": "doggie"
+          },
+          "quiz_id": {
+            "type": "string",
+            "example": "8144be4a2fe0"
+          },
+          "quiz_count": {
+            "type": "integer",
+            "default": 5,
+            "format": "int64",
+            "example": 5
+          },
+          "users": {
+            "description": "IDs from users",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "42a3bd123425"
+            }
+          },
+          "status": {
+            "type": "string",
+            "default": "created",
+            "enum": [
+              "created",
+              "started",
+              "full",
+              "empty"
+            ]
+          }
+        }
+      },
+      "Quiz": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "4ac6075348f3"
+          },
+          "name": {
+            "type": "string",
+            "example": "doggie"
+          },
+          "description": {
+            "type": "string",
+            "example": "8144be4a2fe0"
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Question"
+            }
+          }
+        }
+      },
+      "Question": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "4ac6075348f3"
+          },
+          "text": {
+            "type": "string",
+            "example": ""
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Response"
+            }
+          }
+        }
+      },
+      "Response": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "4ac6075348f3"
+          },
+          "text": {
+            "type": "string",
+            "example": ""
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "correct",
+              "incorrect"
+            ]
+          }
+        }
+      },
+      "UserCreate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "pedro"
+          }
+        }
+      },
+      "RoomCreate": {
+        "required": [
+          "owner"
+        ],
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "example": "doggie"
+          },
+          "quiz_id": {
+            "type": "string",
+            "example": "8144be4a2fe0"
+          },
+          "quiz_count": {
+            "type": "integer",
+            "default": 5,
+            "format": "int64",
+            "example": 5
+          }
+        }
+      },
+      "QuizCreate": {
+        "type": "object",
+        "required": [
+          "name",
+          "description"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "doggie"
+          },
+          "description": {
+            "type": "string",
+            "example": "8144be4a2fe0"
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "example": ""
+                },
+                "options": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "text": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "status": {
+                        "type": "string",
+                        "enum": [
+                          "correct",
+                          "incorrect"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "##default"
+        }
+      }
+    }
+  }
+}

@@ -5,6 +5,7 @@ from flask import Flask
 from flask_socketio import SocketIO
 
 from config.mongodb import mongo
+from routes.swagger import swagger
 from routes.quiz import quiz
 from routes.rooms import rooms
 
@@ -14,6 +15,7 @@ app = Flask(__name__)
 app.config['MONGO_URI'] = os.getenv('MONGO_URI')
 mongo.init_app(app)
 
+app.register_blueprint(swagger, url_prefix='/swagger')
 app.register_blueprint(quiz, url_prefix='/quiz')
 app.register_blueprint(rooms, url_prefix='/api/rooms')
 
