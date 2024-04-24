@@ -2,7 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from flask import Flask
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, join_room, leave_room, send
 
 from config.mongodb import mongo
 from routes.swagger import swagger
@@ -22,9 +22,20 @@ app.register_blueprint(rooms, url_prefix='/api/rooms')
 socketio = SocketIO(app, cors_allowed_origins='*')
 
 
-@socketio.on('message')
-def handle_message(data):
-    print('received message: ' + data)
+@socketio.on('join')
+def on_join(data):
+    username = data['username']
+    room = data['room_id']
+    join_room(room)
+    send(username + ' has entered the room.', to=room)
+
+
+@socketio.on('leave')
+def on_leave(data):
+    username = data['username']
+    room = data['room_id']
+    leave_room(room)
+    send(username + ' has left the room.', to=room)
 
 
 if __name__ == '__main__':
