@@ -16,13 +16,13 @@
   ],
   "tags": [
     {
+      "name": "user"
+    },
+    {
       "name": "room"
     },
     {
       "name": "quiz"
-    },
-    {
-      "name": "user"
     }
   ],
   "paths": {
@@ -111,7 +111,7 @@
         "tags": [
           "user"
         ],
-        "summary": "Create a new user - TODO",
+        "summary": "Create a new user",
         "requestBody": {
           "content": {
             "application/json": {
@@ -139,7 +139,7 @@
         "tags": [
           "user"
         ],
-        "summary": "Return list of users - TODO",
+        "summary": "Return list of users",
         "responses": {
           "200": {
             "description": "successful operation",
@@ -156,6 +156,109 @@
           },
           "404": {
             "description": "Users was not found"
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Return an user",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "user id to get info",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Update user",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "user id to update partially",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Delete user",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "user id to delete",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -241,11 +344,49 @@
       }
     },
     "/rooms/{room_id}": {
+      "get": {
+        "tags": [
+          "room"
+        ],
+        "summary": "Return a room",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "path",
+            "description": "room id to get info",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Room"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
       "patch": {
         "tags": [
           "room"
         ],
-        "summary": "Update room - TODO",
+        "summary": "Update room",
         "parameters": [
           {
             "name": "room_id",
@@ -269,14 +410,13 @@
         },
         "responses": {
           "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Room"
-                }
-              }
-            }
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -284,7 +424,7 @@
         "tags": [
           "room"
         ],
-        "summary": "Delete room - TODO",
+        "summary": "Delete room",
         "parameters": [
           {
             "name": "room_id",
@@ -299,6 +439,12 @@
         "responses": {
           "200": {
             "description": "Successful operation"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -316,6 +462,10 @@
           "name": {
             "type": "string",
             "example": "pedro"
+          },
+          "room_id": {
+            "type": "string",
+            "example": "234567"
           },
           "score": {
             "type": "number",
@@ -354,14 +504,6 @@
             "default": 5,
             "format": "int64",
             "example": 5
-          },
-          "users": {
-            "description": "IDs from users",
-            "type": "array",
-            "items": {
-              "type": "string",
-              "example": "42a3bd123425"
-            }
           },
           "status": {
             "type": "string",
@@ -514,24 +656,6 @@
               }
             }
           }
-        }
-      },
-      "ApiResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "type": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          }
-        },
-        "xml": {
-          "name": "##default"
         }
       }
     }
