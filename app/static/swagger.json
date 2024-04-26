@@ -22,16 +22,166 @@
       "name": "room"
     },
     {
+      "name": "topic"
+    },
+    {
       "name": "quiz"
     }
   ],
   "paths": {
+    "/topics": {
+      "post": {
+        "tags": [
+          "topic"
+        ],
+        "summary": "Create a new topic",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TopicCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Topic"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "topic"
+        ],
+        "summary": "Return list of topics",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Topic"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Topics was not found"
+          }
+        }
+      }
+    },
+    "/topics/{topic_id}": {
+      "get": {
+        "tags": [
+          "topic"
+        ],
+        "summary": "Return topic",
+        "parameters": [
+          {
+            "name": "topic_id",
+            "in": "path",
+            "description": "topic id to update",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Topic"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "topic"
+        ],
+        "summary": "Update topic",
+        "parameters": [
+          {
+            "name": "topic_id",
+            "in": "path",
+            "description": "topic id to update",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "topic"
+        ],
+        "summary": "Delete topic",
+        "parameters": [
+          {
+            "name": "topic_id",
+            "in": "path",
+            "description": "topic id to delete",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/quizzes": {
       "post": {
         "tags": [
           "quiz"
         ],
-        "summary": "Create a new quiz - TODO",
+        "summary": "Create a new quiz",
         "requestBody": {
           "content": {
             "application/json": {
@@ -59,27 +209,21 @@
         "tags": [
           "quiz"
         ],
-        "summary": "Return list of quizzes - TODO",
+        "summary": "Return list of quizzes",
         "parameters": [
           {
-            "name": "status",
+            "name": "topic_id",
             "in": "query",
-            "description": "Status values that need to be considered for filter",
+            "description": "filter quizzes by topic",
             "required": false,
             "schema": {
-              "type": "string",
-              "enum": [
-                "created",
-                "started",
-                "full",
-                "empty"
-              ]
+              "type": "string"
             }
           },
           {
-            "name": "with_quiz",
+            "name": "hidden_response_status",
             "in": "query",
-            "description": "Filter rooms with quiz assignment only",
+            "description": "Hidden response status(correct/incorrect)",
             "required": false,
             "schema": {
               "type": "boolean"
@@ -94,7 +238,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Room"
+                    "$ref": "#/components/schemas/Quiz"
                   }
                 }
               }
@@ -102,6 +246,99 @@
           },
           "404": {
             "description": "Quizzes was not found"
+          }
+        }
+      }
+    },
+    "/quizzes/{quiz_id}": {
+      "get": {
+        "tags": [
+          "quiz"
+        ],
+        "summary": "Return Quiz",
+        "parameters": [
+          {
+            "name": "quiz_id",
+            "in": "path",
+            "description": "quiz id to update",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quiz"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "quiz"
+        ],
+        "summary": "Update quiz",
+        "parameters": [
+          {
+            "name": "quiz_id",
+            "in": "path",
+            "description": "quiz id to get info",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "quiz"
+        ],
+        "summary": "Delete quiz",
+        "parameters": [
+          {
+            "name": "quiz_id",
+            "in": "path",
+            "description": "quiz id to delete",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -517,7 +754,7 @@
           }
         }
       },
-      "Quiz": {
+      "Topic": {
         "type": "object",
         "properties": {
           "id": {
@@ -526,32 +763,30 @@
           },
           "name": {
             "type": "string",
-            "example": "doggie"
+            "example": "Python"
           },
           "description": {
             "type": "string",
-            "example": "8144be4a2fe0"
-          },
-          "questions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Question"
-            }
+            "example": "Quiz about the Python"
           }
         }
       },
-      "Question": {
+      "Quiz": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
+            "example": "34a60678998g4"
+          },
+          "question": {
+            "type": "string",
+            "example": "What is Python?"
+          },
+          "topic_id": {
+            "type": "string",
             "example": "4ac6075348f3"
           },
-          "text": {
-            "type": "string",
-            "example": ""
-          },
-          "options": {
+          "responses": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Response"
@@ -564,14 +799,15 @@
         "properties": {
           "id": {
             "type": "string",
-            "example": "4ac6075348f3"
+            "example": "467ff89f4578f6"
           },
           "text": {
             "type": "string",
-            "example": ""
+            "example": "Python is a game"
           },
           "status": {
             "type": "string",
+            "example": "incorrect",
             "enum": [
               "correct",
               "incorrect"
@@ -610,48 +846,57 @@
           }
         }
       },
-      "QuizCreate": {
+      "TopicCreate": {
         "type": "object",
         "required": [
-          "name",
-          "description"
+          "name"
         ],
         "properties": {
           "name": {
             "type": "string",
-            "example": "doggie"
+            "example": "Python"
           },
           "description": {
             "type": "string",
-            "example": "8144be4a2fe0"
+            "example": "Quiz about Python"
+          }
+        }
+      },
+      "QuizCreate": {
+        "type": "object",
+        "required": [
+          "question",
+          "topic_id"
+        ],
+        "properties": {
+          "question": {
+            "type": "string",
+            "example": "What is Python?"
           },
-          "questions": {
+          "topic_id": {
+            "type": "string",
+            "example": "e3433ede57935f"
+          },
+          "responses": {
             "type": "array",
             "items": {
               "type": "object",
+              "required": [
+                "text",
+                "status"
+              ],
               "properties": {
                 "text": {
                   "type": "string",
-                  "example": ""
+                  "example": "Python is a game"
                 },
-                "options": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "text": {
-                        "type": "string",
-                        "example": ""
-                      },
-                      "status": {
-                        "type": "string",
-                        "enum": [
-                          "correct",
-                          "incorrect"
-                        ]
-                      }
-                    }
-                  }
+                "status": {
+                  "type": "string",
+                  "example": "incorrect",
+                  "enum": [
+                    "correct",
+                    "incorrect"
+                  ]
                 }
               }
             }
