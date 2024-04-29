@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, Response, request
 from flask_cors import CORS
 from flask_mongoengine import MongoEngine
 from flask_restx import Api
@@ -13,6 +13,7 @@ from app.routes.user import UserRoutes
 
 mongo = MongoEngine()
 api = Api()
+cors = CORS()
 
 
 def create_app():
@@ -23,7 +24,15 @@ def create_app():
     api.add_resource(QuizRoutes, '/api/quizzes/', '/api/quizzes/<string:quiz_id>')
     api.add_resource(TopicRoutes, '/api/topics/', '/api/topics/<string:topic_id>')
     api.init_app(app)
-    CORS(app, resources={r"/api/*": {'origins': CORS_ALLOWED_ORIGIN}})
+    cors.init_app(app, resources={r"/api/*": {'origins': CORS_ALLOWED_ORIGIN}})
+
+    @app.before_request
+    def handle_preflight():
+        if request.method == "OPTIONS":
+            res = Response()
+            res.headers['X-Content-Type-Options'] = '*'
+            return res
+
     return app
 
 
