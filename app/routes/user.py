@@ -1,64 +1,56 @@
 from http import HTTPStatus
 
+from bson import ObjectId
 from flask_restx import Resource, abort
 from mongoengine import ValidationError, DoesNotExist
 
 from flask import jsonify
 from flask import request
 
+from app.models.room import Room, UserRoom
 from app.models.user import User
 
 
 class UserRoutes(Resource):
-    def get(self, user_id=None):
+    def get(self, room_id, user_id=None):
         if user_id:
             try:
-                user = User.objects.get(id=user_id)
-                return jsonify(user.to_dict())
+                room = Room.objects.get(id=room_id, users__match={'id': user_id})
+                user = [u for u in room.users if u.id == user_id]
+                return jsonify(user[0].to_dict())
             except DoesNotExist:
                 abort(HTTPStatus.NOT_FOUND, message=f"User {user_id} was not found")
 
-        filter_status = request.args.get('status')
-        filter_role = request.args.get('role')
-        filter_room = request.args.get('room')
+        room = Room.objects.get(id=room_id)
+        users = room.users
 
-        filter_query = dict()
-        if filter_role:
-            filter_query = dict(filter_query, **{'role': filter_role})
-        if filter_status:
-            filter_query = dict(filter_query, **{'status': filter_status})
-        if filter_room:
-            filter_query = dict(filter_query, **{'room_id': filter_room})
-
-        users_list = User.objects(**filter_query)
-
-        if not users_list:
+        if not users:
             abort(HTTPStatus.NOT_FOUND, message="Users was not found")
 
-        return jsonify([user.to_dict() for user in users_list])
+        return jsonify([user.to_dict() for user in users])
 
-    def post(self):
+    def post(self, room_id, user_id=None):
         try:
-            user = User(**request.json)
-            user.save()
+            room = Room.objects.get(id=room_id)
+            user = room.add_user(request.json)
             return jsonify(user.to_dict())
         except ValidationError as e:
             abort(HTTPStatus.BAD_REQUEST, message=str(e))
 
-    def patch(self, user_id):
+    def patch(self, room_id, user_id):
         try:
-            user = User.objects.get(id=user_id)
-            user.update(**request.json)
+            room = Room.objects.get(id=room_id)
+            room.update_user(user_id, request.json)
             return jsonify(message=f'User {user_id} was updated')
         except DoesNotExist:
             abort(HTTPStatus.NOT_FOUND, message=f"User {user_id} was not found")
         except ValidationError as e:
             abort(HTTPStatus.BAD_REQUEST, message=str(e))
 
-    def delete(self, user_id):
+    def delete(self, room_id, user_id):
         try:
-            user = User.objects.get(id=user_id)
-            user.delete()
+            room = Room.objects.get(id=room_id)
+            room.remove_user(user_id)
             return jsonify(message=f'User {user_id} was deleted')
         except DoesNotExist:
             abort(HTTPStatus.NOT_FOUND, message=f"User {user_id} was not found")

@@ -1,8 +1,10 @@
 from http import HTTPStatus
+import random
 
 from flask_restx import Resource, abort
 from mongoengine import ValidationError, DoesNotExist
 
+from app.models.quiz import Quiz
 from app.models.room import Room, ROOM_ID_COUNT_DIGITS
 from flask import jsonify
 from flask import request
@@ -60,5 +62,22 @@ class RoomRoutes(Resource):
             return jsonify(message=f'Room {room_id} was deleted')
         except DoesNotExist:
             abort(HTTPStatus.NOT_FOUND, message=f"Room {room_id} was not found")
+        except ValidationError as e:
+            abort(HTTPStatus.BAD_REQUEST, message=str(e))
+
+
+class QuizRoomRoutes(Resource):
+    def post(self, room_id):
+        try:
+            room = Room.objects.get(id=room_id)
+            topics = request.json.get('topics')
+
+            quiz = Quiz.objects.filter(topic_id__in=topics)
+            quizzes = [q.id for q in quiz]
+            random.shuffle(quizzes)
+
+            quizzes_storage = room.add_quizzes(quizzes[:4])
+
+            return jsonify([q.to_dict() for q in quizzes_storage])
         except ValidationError as e:
             abort(HTTPStatus.BAD_REQUEST, message=str(e))

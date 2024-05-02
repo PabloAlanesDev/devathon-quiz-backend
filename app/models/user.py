@@ -1,7 +1,5 @@
 from enum import Enum
-from mongoengine import Document, StringField, EnumField, FloatField
-
-from app.models.room import ROOM_ID_COUNT_DIGITS
+from mongoengine import EmbeddedDocument, StringField, EnumField, FloatField
 
 
 class UserStatus(Enum):
@@ -15,9 +13,9 @@ class UserRole(Enum):
     INVITED = 'invited'
 
 
-class User(Document):
+class User(EmbeddedDocument):
+    id = StringField(required=True)
     name = StringField(max_length=20, required=True)
-    room_id = StringField(max_length=ROOM_ID_COUNT_DIGITS)
     status = EnumField(UserStatus, default=UserStatus.UNKNOWN)
     role = EnumField(UserRole, default=UserRole.INVITED)
     score = FloatField(default=0)
@@ -26,7 +24,6 @@ class User(Document):
         return {
             'id': str(self.id),
             'name': self.name,
-            'room_id': self.room_id,
             'role': self.role.value,
             'status': self.status.value,
             'score': self.score
