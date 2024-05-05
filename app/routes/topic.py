@@ -4,6 +4,7 @@ from flask import request
 from flask_restx import Resource, abort
 from mongoengine import ValidationError, DoesNotExist, NotUniqueError
 
+from app.models.quiz import Quiz
 from app.models.topic import Topic
 
 
@@ -47,6 +48,10 @@ class TopicRoutes(Resource):
         try:
             topic = Topic.objects.get(id=topic_id)
             topic.delete()
+
+            quizzes = Quiz.objects(topic_id=topic_id)
+            quizzes.delete()
+
             return jsonify(message=f'Topic {topic_id} was deleted')
         except DoesNotExist:
             abort(HTTPStatus.NOT_FOUND, message=f"Topic {topic_id} was not found")
