@@ -8,7 +8,7 @@ from app.config.mongodb import mongo_config
 from app.routes.quiz import QuizRoutes
 from app.routes.swagger import swagger
 from app.routes.room import QuizRoomRoutes, RoomRoutes
-from app.routes.topic import TopicRoutes
+from app.routes.topic import TopicQuizRoutes, TopicRoutes
 from app.routes.user import UserRoutes
 
 mongo = MongoEngine()
@@ -25,6 +25,8 @@ def create_app():
 
     api.add_resource(QuizRoutes, '/api/quizzes/', '/api/quizzes/<string:quiz_id>')
     api.add_resource(TopicRoutes, '/api/topics/', '/api/topics/<string:topic_id>')
+    api.add_resource(TopicQuizRoutes, '/api/topics/<string:topic_id>/quizzes/')
+
     api.init_app(app)
     cors.init_app(app, resources={r"/api/*": {'origins': CORS_ALLOWED_ORIGIN}})
 
