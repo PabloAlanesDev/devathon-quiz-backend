@@ -761,6 +761,89 @@
           }
         }
       }
+    },
+    "/rooms/{room_id}/users": {
+      "get": {
+        "tags": [
+          "room"
+        ],
+        "summary": "Return users from a room",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "room"
+        ],
+        "summary": "Create user for a room",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -776,15 +859,19 @@
             "type": "string",
             "example": "pedro"
           },
-          "room_id": {
-            "type": "string",
-            "example": "234567"
-          },
           "score": {
             "type": "number",
             "default": 0,
             "format": "float",
             "example": 10.5
+          },
+          "role": {
+            "type": "string",
+            "default": "invited",
+            "enum": [
+              "invited",
+              "owner"
+            ]
           },
           "status": {
             "type": "string",
@@ -804,10 +891,6 @@
             "type": "string",
             "example": "455420"
           },
-          "owner": {
-            "type": "string",
-            "example": "doggie"
-          },
           "quiz_id": {
             "type": "string",
             "example": "8144be4a2fe0"
@@ -817,6 +900,12 @@
             "default": 5,
             "format": "int64",
             "example": 5
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            }
           },
           "status": {
             "type": "string",
