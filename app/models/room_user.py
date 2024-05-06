@@ -1,32 +1,31 @@
 from enum import Enum
-from mongoengine import Document, StringField, EnumField, FloatField
-
-from app.models.room import ROOM_ID_COUNT_DIGITS
+from mongoengine import StringField, EnumField, FloatField, EmbeddedDocument
 
 
-class UserStatus(Enum):
+class RoomUserStatus(Enum):
     UNKNOWN = 'unknown'
     CONNECT = 'connect'
     DISCONNECT = 'disconnect'
+    QUIZ_PENDING = 'quiz_pending'
+    QUIZ_DONE = 'quiz_done'
 
 
-class UserRole(Enum):
+class RoomUserRole(Enum):
     OWNER = 'owner'
     INVITED = 'invited'
 
 
-class User(Document):
+class RoomUser(EmbeddedDocument):
+    id = StringField(required=True)
     name = StringField(max_length=20, required=True)
-    room_id = StringField(max_length=ROOM_ID_COUNT_DIGITS)
-    status = EnumField(UserStatus, default=UserStatus.UNKNOWN)
-    role = EnumField(UserRole, default=UserRole.INVITED)
+    status = EnumField(RoomUserStatus, default=RoomUserStatus.UNKNOWN)
+    role = EnumField(RoomUserRole, default=RoomUserRole.INVITED)
     score = FloatField(default=0)
 
     def to_dict(self):
         return {
             'id': str(self.id),
             'name': self.name,
-            'room_id': self.room_id,
             'role': self.role.value,
             'status': self.status.value,
             'score': self.score

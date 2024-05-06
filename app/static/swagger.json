@@ -16,9 +16,6 @@
   ],
   "tags": [
     {
-      "name": "user"
-    },
-    {
       "name": "room"
     },
     {
@@ -166,6 +163,82 @@
         "responses": {
           "200": {
             "description": "Successful operation"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/topics/{topic_id}/quizzes": {
+      "get": {
+        "tags": [
+          "topic"
+        ],
+        "summary": "Return quizzes from a topic",
+        "parameters": [
+          {
+            "name": "topic_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Quiz"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "topic"
+        ],
+        "summary": "Create quizzes for a topic",
+        "parameters": [
+          {
+            "name": "topic_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Quiz"
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request"
@@ -324,163 +397,6 @@
             "name": "quiz_id",
             "in": "path",
             "description": "quiz id to delete",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/users": {
-      "post": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Create a new user",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserCreate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Return list of users",
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/User"
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Users was not found"
-          }
-        }
-      }
-    },
-    "/users/{user_id}": {
-      "get": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Return an user",
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "description": "user id to get info",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Update user",
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "description": "user id to update partially",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Delete user",
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "description": "user id to delete",
             "required": true,
             "schema": {
               "type": "string"
@@ -685,6 +601,176 @@
           }
         }
       }
+    },
+    "/rooms/{room_id}/users": {
+      "get": {
+        "tags": [
+          "room"
+        ],
+        "summary": "Return users from a room",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "room"
+        ],
+        "summary": "Create user for a room",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/rooms/{room_id}/quizzes": {
+      "get": {
+        "tags": [
+          "room"
+        ],
+        "summary": "Return quizzes from a room",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QuizRoom"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "room"
+        ],
+        "summary": "Assign quizzes to room by topics",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "List of topic ids",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuizRoom"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -700,15 +786,19 @@
             "type": "string",
             "example": "pedro"
           },
-          "room_id": {
-            "type": "string",
-            "example": "234567"
-          },
           "score": {
             "type": "number",
             "default": 0,
             "format": "float",
             "example": 10.5
+          },
+          "role": {
+            "type": "string",
+            "default": "invited",
+            "enum": [
+              "invited",
+              "owner"
+            ]
           },
           "status": {
             "type": "string",
@@ -728,19 +818,17 @@
             "type": "string",
             "example": "455420"
           },
-          "owner": {
-            "type": "string",
-            "example": "doggie"
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            }
           },
-          "quiz_id": {
-            "type": "string",
-            "example": "8144be4a2fe0"
-          },
-          "quiz_count": {
-            "type": "integer",
-            "default": 5,
-            "format": "int64",
-            "example": 5
+          "quizzes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuizRoom"
+            }
           },
           "status": {
             "type": "string",
@@ -768,6 +856,28 @@
           "description": {
             "type": "string",
             "example": "Quiz about the Python"
+          }
+        }
+      },
+      "QuizRoom": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "34a60678998g4"
+          },
+          "quiz_id": {
+            "type": "string",
+            "example": "4ac6075348f3"
+          },
+          "status": {
+            "type": "string",
+            "default": "pending",
+            "enum": [
+              "pending",
+              "in_progress",
+              "done"
+            ]
           }
         }
       },
