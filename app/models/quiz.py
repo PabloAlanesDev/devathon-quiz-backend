@@ -28,7 +28,7 @@ class Response(EmbeddedDocument):
 
 
 class Quiz(Document):
-    question = StringField(required=True, unique=True)
+    question = StringField(required=True)
     topic_id = StringField(required=True)
     responses = EmbeddedDocumentListField(Response)
 
