@@ -11,7 +11,6 @@ from app.routes.swagger import swagger
 from app.routes.room import RoomRoutes
 from app.routes.topic import TopicRoutes
 from app.routes.topic_quiz import TopicQuizRoutes
-from app.routes.user import UserRoutes
 
 mongo = MongoEngine()
 api = Api()
@@ -23,7 +22,6 @@ def create_app():
     app.register_blueprint(swagger, url_prefix='/swagger')
     api.add_resource(RoomRoutes, '/api/rooms/', '/api/rooms/<string:room_id>')
     api.add_resource(RoomUserRoutes, '/api/rooms/<string:room_id>/users/')
-    api.add_resource(UserRoutes, '/api/users/', '/api/users/<string:user_id>')
     api.add_resource(QuizRoutes, '/api/quizzes/', '/api/quizzes/<string:quiz_id>')
     api.add_resource(TopicRoutes, '/api/topics/', '/api/topics/<string:topic_id>')
     api.add_resource(TopicQuizRoutes, '/api/topics/<string:topic_id>/quizzes/')
