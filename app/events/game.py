@@ -37,7 +37,7 @@ def on_start():
         quiz: Quiz = Quiz.objects.get(id=quiz_of_room.quiz_id)
 
         # Update quiz status -> in_progress
-        room.update_quiz_status(quiz_of_room.quiz_id, RoomQuizStatus.IN_PROGRESS)
+        room.update_quiz_status(quiz.id, RoomQuizStatus.IN_PROGRESS)
 
         # Update all user status -> quiz_pending
         room.update_all_user_status(RoomUserStatus.QUIZ_PENDING)
@@ -104,7 +104,7 @@ def on_quiz_response(json):
                 quiz: Quiz = Quiz.objects.get(id=quiz_of_room.quiz_id)
 
                 # Update quiz status -> in_progress in DB
-                room.update_quiz_status(quiz_of_room.id, RoomQuizStatus.IN_PROGRESS)
+                room.update_quiz_status(quiz.id, RoomQuizStatus.IN_PROGRESS)
 
                 # Update all user status -> quiz_pending in DB
                 room.update_all_user_status(RoomUserStatus.QUIZ_PENDING)

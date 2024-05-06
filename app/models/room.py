@@ -69,7 +69,7 @@ class Room(Document):
 
     def update_quiz_status(self, quiz_id: str, status: RoomQuizStatus):
         for quiz in self.quizzes:
-            if quiz.id == quiz_id:
+            if quiz.quiz_id == quiz_id:
                 quiz.status = status
                 break
         super().save()
