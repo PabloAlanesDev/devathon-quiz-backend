@@ -38,7 +38,7 @@ class RoomQuizRoutes(Resource):
 
             random.shuffle(quiz_ids)
 
-            for quiz_id in quiz_ids[:ROOM_QUIZ_COUNT_DEFAULT-1]:
+            for quiz_id in quiz_ids[:ROOM_QUIZ_COUNT_DEFAULT]:
                 room_quiz = RoomQuiz(id=str(ObjectId()), quiz_id=str(quiz_id))
                 room.quizzes.append(room_quiz)
 
