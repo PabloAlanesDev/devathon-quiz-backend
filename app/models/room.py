@@ -4,6 +4,7 @@ from app.models.room_quiz import RoomQuiz
 from app.models.room_user import RoomUser
 
 ROOM_ID_COUNT_DIGITS = 6
+ROOM_QUIZ_COUNT_DEFAULT = 5
 
 
 class RoomStatus(Enum):

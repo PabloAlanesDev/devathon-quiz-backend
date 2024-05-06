@@ -684,6 +684,93 @@
           }
         }
       }
+    },
+    "/rooms/{room_id}/quizzes": {
+      "get": {
+        "tags": [
+          "room"
+        ],
+        "summary": "Return quizzes from a room",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QuizRoom"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "room"
+        ],
+        "summary": "Assign quizzes to room by topics",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "List of topic ids",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuizRoom"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -731,20 +818,16 @@
             "type": "string",
             "example": "455420"
           },
-          "quiz_id": {
-            "type": "string",
-            "example": "8144be4a2fe0"
-          },
-          "quiz_count": {
-            "type": "integer",
-            "default": 5,
-            "format": "int64",
-            "example": 5
-          },
           "users": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/User"
+            }
+          },
+          "quizzes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuizRoom"
             }
           },
           "status": {
@@ -773,6 +856,28 @@
           "description": {
             "type": "string",
             "example": "Quiz about the Python"
+          }
+        }
+      },
+      "QuizRoom": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "34a60678998g4"
+          },
+          "quiz_id": {
+            "type": "string",
+            "example": "4ac6075348f3"
+          },
+          "status": {
+            "type": "string",
+            "default": "pending",
+            "enum": [
+              "pending",
+              "in_progress",
+              "done"
+            ]
           }
         }
       },
