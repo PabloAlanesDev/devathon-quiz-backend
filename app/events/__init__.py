@@ -2,4 +2,4 @@ from flask_socketio import SocketIO
 
 socketio = SocketIO()
 
-from . import room # noqa
+from . import room, game # noqa
