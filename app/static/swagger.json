@@ -226,6 +226,20 @@
             }
           }
         ],
+        "requestBody": {
+          "description": "List of topic ids",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RoomQuizCreate"
+                }
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "successful operation",
@@ -986,6 +1000,43 @@
           "topic_id": {
             "type": "string",
             "example": "e3433ede57935f"
+          },
+          "responses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "text",
+                "status"
+              ],
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "example": "Python is a game"
+                },
+                "status": {
+                  "type": "string",
+                  "example": "incorrect",
+                  "enum": [
+                    "correct",
+                    "incorrect"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "RoomQuizCreate": {
+        "type": "object",
+        "required": [
+          "question",
+          "topic_id"
+        ],
+        "properties": {
+          "question": {
+            "type": "string",
+            "example": "What is Python?"
           },
           "responses": {
             "type": "array",
