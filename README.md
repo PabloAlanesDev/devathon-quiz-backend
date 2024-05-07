@@ -56,3 +56,9 @@ Are you a coding enthusiast looking to put your skills to test? Don't look more!
 - Python
 - flask-socketio
 - MongoDB
+
+# MongoDB
+![diagram mongodb](https://github.com/PabloAlanesDev/devathon-quiz-backend/blob/develop/docs/diagram_mongodb.png)
+
+# Interface frontend & backend
+![diagram interface](https://github.com/PabloAlanesDev/devathon-quiz-backend/blob/develop/docs/diagram_interfaz.png)
